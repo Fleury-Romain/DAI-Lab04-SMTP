@@ -9,6 +9,12 @@ public class MailContent {
         this.content = content;
     }
 
+    public MailContent(String[] mailContent){
+        // FIXME vérifier le tableau de string transmis !
+        this.subject = mailContent[0];
+        this.content = mailContent[1];
+    }
+
     public String getSubject(){
         return subject;
     }

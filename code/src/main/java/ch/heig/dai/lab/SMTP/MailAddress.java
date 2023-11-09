@@ -8,9 +8,20 @@ public class MailAddress {
     les adresses suivantes comme les cibles
      */
     int groupeSize;
+    String from;
+    String[] to;
 
-    /*public MailAdress(int groupSize, ) {
-
+    public MailAddress(int groupSize, String from, String[] to) {
+        this.groupeSize = groupSize;
+        this.from = from;
+        this.to = to;
     }
-    BufferedReader br = new BufferedReader();*/
+
+    public String getFrom(){
+        return from;
+    }
+
+    public String getTo(int id){
+        return to[id];
+    }
 }

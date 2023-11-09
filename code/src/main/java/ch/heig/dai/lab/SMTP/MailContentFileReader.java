@@ -2,7 +2,7 @@ package ch.heig.dai.lab.SMTP;
 
 import java.io.*;
 
-public class MailContentFileReader {
+public class MailContentFileReader implements AutoCloseable {
     private BufferedReader file;
 
     MailContentFileReader(String filePath) throws FileNotFoundException {
@@ -17,17 +17,13 @@ public class MailContentFileReader {
                 if (!((line = file.readLine()) != null)) break;
                 if(line.contains("#") || line.equals("\n")) continue;
 
-                //System.out.println(line);
-
                 String[] subject = line.split("subject:");
                 if(subject.length > 1){
-                    System.out.println(subject[1]);
                     mail[0] = subject[1];
                 }
 
                 String[] content = line.split("content:");
                 if(content.length > 1){
-                    System.out.println(content[1]);
                     mail[1] = content[1];
                     break;
                 }
@@ -41,5 +37,10 @@ public class MailContentFileReader {
     public String[] getMail(int id){
 
         return new String[]{"salut", "c'estcool"};
+    }
+
+    @Override
+    public void close() throws Exception {
+        file.close();
     }
 }
