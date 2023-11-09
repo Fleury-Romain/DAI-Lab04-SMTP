@@ -9,6 +9,7 @@ public class MainTest{
             MailContent mc = new MailContent(mcfr.getMail());
             MailAddress ma = new MailAddress(3, "romain.fleury@heig-vd.ch", new String[]{"t411galas@gmail.com", "r.fleury.1400@gmail.com"});
 
+            
             ConnectionHandler ch = new ConnectionHandler("localhost", 1025, ma, mc);
             ch.run();
 
