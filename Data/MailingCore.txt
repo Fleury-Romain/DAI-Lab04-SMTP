@@ -1,16 +1,16 @@
 ## This file is in the format
-## <Subject>\n
+## subject: <un_sujet>\n
 ## <message lorem ipsum ..>\n
 
 # Mail 1
 
 subject:Is your freezer working ? 
-content:Hello, is your freezer actually working ? Well you should better check it right now
+content:Hello, is your freezer actually working ? Well you should better check it right now.
 
 # Mail 2
 
 subject:We are reaching you about your car extended varanty
-content:Hello dear Sir, it has been several month since we try to reach you about your car extended warranty. Can you please contact us. Best regards
+content:Hello dear Sir, it has been several month since we try to reach you about your car extended warranty. Can you please contact us. Best regards.
 
 # Mail 3
 
