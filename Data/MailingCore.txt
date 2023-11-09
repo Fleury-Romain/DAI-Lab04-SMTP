@@ -1,0 +1,18 @@
+## This file is in the format
+## <Subject>\n
+## <message lorem ipsum ..>\n
+
+# Mail 1
+
+Is your freezer working ? 
+Hello, is your freezer actually working ? Well you should better check it right now
+
+# Mail 2
+
+We are reaching you about your car extended varanty
+Hello dear Sir, it has been several month since we try to reach you about your car extended warranty. Can you please contact us. Best regards
+
+# Mail 3
+
+We have a WINNER !!!
+Congratulation Sir ! You are the big winner of our Super lotto !! Contact us asap to collect your gains.
