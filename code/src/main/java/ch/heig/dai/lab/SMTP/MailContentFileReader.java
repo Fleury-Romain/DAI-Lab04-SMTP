@@ -19,7 +19,7 @@ public class MailContentFileReader implements AutoCloseable {
         String line;
         List<String> subjects = new ArrayList<>();
         while((line = file.readLine()) != null) {
-            if (line.contains("#") || line.equals("\n")) continue;
+            if (line.split(" ")[0].equals("#") || line.equals("\n")) continue;
 
             if(line.contains("subject:")) {
                 String[] subject = line.split("subject:");
@@ -36,7 +36,7 @@ public class MailContentFileReader implements AutoCloseable {
         String line;
         List<String> contents = new ArrayList<>();
         while((line = file.readLine()) != null) {
-            if (line.contains("#") || line.equals("\n")) continue;
+            if (line.split(" ")[0].equals("#") || line.equals("\n")) continue;
             if(line.contains("content:")) {
                 String[] content = line.split("content:");
                 if (content.length > 1) {

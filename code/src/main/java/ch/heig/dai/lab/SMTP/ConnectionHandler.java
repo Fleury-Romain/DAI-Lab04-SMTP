@@ -69,7 +69,7 @@ public class ConnectionHandler {
                 send(out, "DATA\n");
                 break;
             case 5:
-                int id = 2; // controle de la valeur du sujet et du contenu
+                int id = 8; // controle de la valeur du sujet et du contenu
                 send(out, "FROM: <" + mailAddress.getFrom() + ">\n");
                 send(out, "TO: <" + mailAddress.getTo(1) + ">\n"); // ajouter de nouveaux destinataire
                 send(out, "DATE: April 1st, 2021\n");
