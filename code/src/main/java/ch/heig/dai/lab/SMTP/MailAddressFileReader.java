@@ -3,7 +3,7 @@ package ch.heig.dai.lab.SMTP;
 import java.io.*;
 import java.util.ArrayList;
 
-public class MailAddressFileReader {
+public class MailAddressFileReader implements AutoCloseable{
     private final BufferedReader file;
     public MailAddressFileReader(String filePath) throws FileNotFoundException {
         file = new BufferedReader(new FileReader(filePath));
@@ -23,18 +23,18 @@ public class MailAddressFileReader {
         while(true){
             try {
                 if ((line = file.readLine()) == null) break;
-                if(line.equals("\n")) break;
+                if(line.equals("\n")) continue; // si tu break tu arrètes de lire.
                 if(line.contains("#")){
                     array.add(line.split("#")[1]);
                     System.out.println("group: " + line);
                 }
                 if(line.contains("sender:")){
                     array.add(line.split("sender:")[1]);
-                    System.out.println("sender: " + line);
+                    System.out.println("sender: " + line); // Afficher a partir de array pour affichage cohérent
                 }
                 if(line.contains("receiver:")){
                     array.add(line.split("receiver:")[1]);
-                    System.out.println("receiver: " + line);
+                    System.out.println("receiver: " + line); // Afficher a partir de array pour affichage cohérent
                 }
 
             } catch (IOException e) {
@@ -42,6 +42,11 @@ public class MailAddressFileReader {
             }
         }
         return array;
+    }
+
+    @Override
+    public void close() throws Exception {
+        file.close();
     }
 
 
