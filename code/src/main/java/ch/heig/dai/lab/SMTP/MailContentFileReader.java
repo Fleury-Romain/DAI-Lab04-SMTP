@@ -36,7 +36,7 @@ public class MailContentFileReader implements AutoCloseable {
 
     public String[] getMail(int id){
 
-        return new String[]{"salut", "c'estcool"};
+        return new String[]{"salut", "c'est cool"};
     }
 
     @Override
