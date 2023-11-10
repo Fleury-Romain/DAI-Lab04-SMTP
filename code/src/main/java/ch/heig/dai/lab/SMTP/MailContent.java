@@ -1,25 +1,30 @@
 package ch.heig.dai.lab.SMTP;
 
+import java.util.List;
+
 public class MailContent {
-    private String subject;
-    private String content;
+    private List<String> subjects;
+    private List<String> contents;
 
     public MailContent(String subject, String content){
-        this.subject = subject;
-        this.content = content;
+        this.subjects = List.of(subject);
+        this.contents = List.of(content);
     }
-
-    public MailContent(String[] mailContent){
+    public MailContent(List<String> subjects, List<String> contents){
         // FIXME vérifier le tableau de string transmis !
-        this.subject = mailContent[0];
-        this.content = mailContent[1];
+        this.subjects = subjects;
+        this.contents = contents;
+    }
+    public MailContent(MailContentFileReader mcfr){
+        this.subjects = mcfr.getSubjects();
+        this.contents = mcfr.getContents();
     }
 
-    public String getSubject(){
-        return subject;
+    public String getSubject(int id){
+        return subjects.get(id);
     }
 
-    public String getContent(){
-        return content;
+    public String getContent(int id){
+        return contents.get(id);
     }
 }
