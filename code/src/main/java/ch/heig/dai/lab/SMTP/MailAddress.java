@@ -1,6 +1,7 @@
 package ch.heig.dai.lab.SMTP;
 
 import java.io.BufferedReader;
+import java.util.List;
 
 public class MailAddress {
     /*
@@ -8,20 +9,22 @@ public class MailAddress {
     les adresses suivantes comme les cibles
      */
     int groupeSize;
-    String from;
-    String[] to;
+    private List<String> from;
+    private List<List<String>> to;
 
-    public MailAddress(int groupSize, String from, String[] to) {
-        this.groupeSize = groupSize;
-        this.from = from;
-        this.to = to;
+    public MailAddress(MailAddressFileReader mafr){
+        from = mafr.getFrom();
+        to = mafr.getTo();
     }
 
-    public String getFrom(){
-        return from;
+    public int getNbrGroupe(){
+        return from.size();
+    }
+    public String getFrom(int id){
+        return from.get(id);
     }
 
-    public String getTo(int id){
-        return to[id];
+    public List<String> getTo(int id){
+        return to.get(id);
     }
 }

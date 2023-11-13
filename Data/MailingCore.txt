@@ -1,6 +1,6 @@
-## This file is in the format
-## subject: <un_sujet>\n
-## <message lorem ipsum ..>\n
+# This file is in the format
+# subject: <un_sujet>\n
+# <message lorem ipsum ..>\n
 
 # Mail 1
 
@@ -16,3 +16,33 @@ content:Hello dear Sir, it has been several month since we try to reach you abou
 
 subject:We have a WINNER !!!
 content:Congratulation Sir ! You are the big winner of our Super lotto !! Contact us asap to collect your gains.
+
+# Mail 4
+
+subject:Important Announcement
+content:Dear Customer, we have an important announcement regarding our services. Please read the attached document for details.
+
+# Mail 5
+
+subject:Exclusive Discount for You
+content:Hello, valued customer! We are excited to offer you an exclusive discount on your next purchase. Don't miss out on this special offer.
+
+# Mail 6
+
+subject:Job Opportunity
+content:Dear [Your Name], we came across your profile and believe you would be a great fit for a job opening at our company. Please review the attached job description and apply if interested.
+
+# Mail 7
+
+subject:Update Your Account Information
+content:Dear user, it's essential to keep your account information up-to-date. Click on the following link to update your account details.
+
+# Mail 8
+
+subject:Invitation to Our Event
+content:Dear [Your Name], you are invited to attend our upcoming event. Save the date and join us for an evening of networking and entertainment.
+
+# Mail 9
+
+subject:Your Recent Purchase
+content:Thank you for your recent purchase. Your order #[Order Number] has been confirmed. You can track your shipment using the link provided.

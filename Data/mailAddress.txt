@@ -1,0 +1,8 @@
+# Groupe 1
+sender:romain.fleury@heig-vd.ch
+receiver:t411galas@gmail.com
+receiver:r.fleury.1400@gmail.com
+receiver:romain.fleury@etml-es.ch
+receiver:romain_0017@hotmail.com
+
+# Groupe 2
