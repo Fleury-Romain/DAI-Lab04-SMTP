@@ -12,17 +12,14 @@ public class MailAddress {
     private List<String> from;
     private List<List<String>> to;
 
-    /*public MailAddress(int groupSize, String from, String[] to) {
-        this.groupeSize = groupSize;
-        this.from = from;
-        this.to = to;
-    }*/
-
     public MailAddress(MailAddressFileReader mafr){
         from = mafr.getFrom();
         to = mafr.getTo();
     }
 
+    public int getNbrGroupe(){
+        return from.size();
+    }
     public String getFrom(int id){
         return from.get(id);
     }

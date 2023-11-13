@@ -20,6 +20,9 @@ public class MailContent {
         this.contents = mcfr.getContents();
     }
 
+    public int getNbr(){
+        return subjects.size();
+    }
     public String getSubject(int id){
         return subjects.get(id);
     }

@@ -29,12 +29,12 @@ public class ConnectionHandler {
             while (!(s.isClosed())) {
                 while ((line = in.readLine()) != null) {
                     System.out.println(line);
-                    if(line.contains("221")){ break; }
                     if(!line.contains("-")){
                         flag++;
                         break;
                     }
                 }
+                if(line.contains("221")){ break; }
                 SMTPhandler(out, flag);
             }
         } catch (IOException e) {
