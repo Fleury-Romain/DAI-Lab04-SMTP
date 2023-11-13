@@ -74,9 +74,25 @@ public class CmdHandler {
         if(cmdargs[0].equals("set")){ // Commande d'initialisation
             if(cmdargs[1].equals("ip")){
                 setIP(cmdargs[2]);
+            } else if (cmdargs[1].equals("port")) {
+                this.port = Integer.parseInt(cmdargs[2]);
+            } else if (cmdargs[1].equals("mailaddress")) {
+                try{
+                    this.mailAddress = new MailAddress(new MailAddressFileReader(cmdargs[2]));
+                }catch(Exception e){
+                    throw new RuntimeException("Impossible de créer l'objet mailaddress : " + e);
+                }
+            } else if (cmdargs[1].equals("mailcontent")) {
+                try{
+                    this.mailContent = new MailContent(new MailContentFileReader(cmdargs[2]));
+                }catch(Exception e){
+                    throw new RuntimeException("Impossible de créer l'objet mailcontent : " + e);
+                }
+            } else if (cmdargs[1].equals("groupe")) {
+                this.groupe = Integer.parseInt(cmdargs[2]);
+            } else if (cmdargs[1].equals("mail")) {
+                this.mail = Integer.parseInt(cmdargs[2]);
             }
-            // TODO Ajouter toutes les autres comandes de paramètres
-
         } else if (cmdargs[0].equals("get")) {
             if(mailAddress == null || mailContent == null){return;}
 

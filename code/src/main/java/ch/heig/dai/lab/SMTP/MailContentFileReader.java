@@ -44,7 +44,6 @@ public class MailContentFileReader implements AutoCloseable {
                 }
             }
         }
-        System.out.println(contents);
         return contents;
     }
 

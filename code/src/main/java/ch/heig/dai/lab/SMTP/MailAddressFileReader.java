@@ -20,7 +20,6 @@ public class MailAddressFileReader implements AutoCloseable{
          follows as the e-mail address of the receiver (one receiver per line).
          finish when a line with only \n is found
          */
-        System.out.println("MailAddressFileReader");
         List<String> from = new ArrayList<>();
         List<List<String>> to = new ArrayList<>();
 
@@ -33,19 +32,14 @@ public class MailAddressFileReader implements AutoCloseable{
                 // L'ordre des groupes est donné par
                 // l'ordre des elements de la liste
 
-                /*array.add(line.split("#")[1]);
-                System.out.println("group: " + line);
-                 */
                 to.add(new ArrayList<>());
                 groupe++;
             }
             if(line.contains("sender:")){
                 from.add(line.split("sender:")[1]);
-                System.out.println("sender: " + line); // Afficher a partir de array pour affichage cohérent
             }
             if(line.contains("receiver:")){
                 to.get(groupe).add(line.split("receiver:")[1]);
-                System.out.println("receiver: " + line); // Afficher a partir de array pour affichage cohérent
             }
         }
 
@@ -64,22 +58,5 @@ public class MailAddressFileReader implements AutoCloseable{
     public void close() throws Exception {
         file.close();
     }
-
-
-    /*
-    public String[] getAddress() {
-         String[] mail;
-         String line;
-         while(true){
-             try {
-                 if ((line = file.readLine()) == null) break;
-                 System.out.println(line);
-             } catch (IOException e) {
-                 throw new RuntimeException(e);
-             }
-        }
-        return new String[]{"salut", "c'estcool"};
-    }
-    */
 
 }

@@ -23,6 +23,9 @@ public class ConnectionHandler {
             var in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
             var out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), StandardCharsets.UTF_8))
         ) {
+            // faire une boucle while sur la session
+            // + faire une boucle while pour la lecture du buffer
+
             String line;
             int flag = 0;
 
