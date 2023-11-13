@@ -6,9 +6,9 @@ public class MainTest {
                 "--ip", "localhost",
                 "-p", "1025",
                 "-g", "3",
-                "-m", "1"//,
-                //"-ma", "C:\\HEIG\\Semestre 3\\DAI\\Laboratoire\\DAI-Lab04-SMTP\\Data\\mailAddress.txt",
-                //"-mc", "C:\\HEIG\\Semestre 3\\DAI\\Laboratoire\\DAI-Lab04-SMTP\\Data\\MailingCore.txt"
+                "-m", "1",
+                "-ma", "C:\\HEIG\\Semestre 3\\DAI\\Laboratoire\\DAI-Lab04-SMTP\\Data\\mailAddress.txt",
+                "-mc", "C:\\HEIG\\Semestre 3\\DAI\\Laboratoire\\DAI-Lab04-SMTP\\Data\\MailingCore.txt"
         };
         CmdHandler cmdh = new CmdHandler(args);
 

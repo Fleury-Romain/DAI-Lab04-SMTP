@@ -51,6 +51,8 @@ public class CmdHandler {
         Scanner sc = new Scanner(System.in);
         String line = null;
         do { // FIXME effacer la console entre chaque affichage de l'app (cls/clear)
+             // FIXME OK pour cmd windows, make it prettier
+            clearConsole();
             // Affichage ddu menu principal de l'application
             displayApp();
 
@@ -70,6 +72,13 @@ public class CmdHandler {
     private void appCommand(String cmd){
         // FIXME vérifier la validité de la commande passé (nbr params, etc ...)
         String[] cmdargs = cmd.split(" ");
+
+        // FIXME débeugger le filepath pour accepter les espaces
+        if (cmdargs.length > 2 && cmdargs[2].contains("\"")){
+            for(int i = 3; i < cmdargs.length; i++){
+                cmdargs[2] += cmdargs[i];
+            }
+        }
 
         if(cmdargs[0].equals("set")){ // Commande d'initialisation
             if(cmdargs[1].equals("ip")){
@@ -99,12 +108,14 @@ public class CmdHandler {
             // FIXME vérifier que l'argument est bien dans la plage du nombre d'élements (groupe/mail)
             if(cmdargs[1].equals("groupe")){
                 if(cmdargs.length > 2){
+                    System.out.println("# Groupe " + cmdargs[2]);
                     System.out.println("From : " + mailAddress.getFrom(Integer.parseInt(cmdargs[2])));
                     for(String s: mailAddress.getTo(Integer.parseInt(cmdargs[2]))){
                         System.out.println("To : " + s);
                     }
                 }else{
                     for(int i = 0; i < mailAddress.getNbrGroupe(); i++){
+                        System.out.println("# Groupe " + i);
                         System.out.println("From : " + mailAddress.getFrom(i));
                         for(String s: mailAddress.getTo(i)){
                             System.out.println("To : " + s);
@@ -128,6 +139,9 @@ public class CmdHandler {
             if(argsChecker()) {
                 smtpConnect();
             }
+        } else if (cmdargs[0].equals("clear")) {
+            clearConsole();
+            //System.out.println("Commande non reconnue");
         }
     }
 
@@ -236,6 +250,12 @@ public class CmdHandler {
                 case "-ma":
                 case "--mailaddress":
                     try {
+                        String path = args[i+1];
+                        /*if (args[i+1].contains("\"")){
+                            for(int j = i+2; !args[j].contains("-"); i++){
+                                path += args[j];
+                            }
+                        }*/
                         mailAddress = new MailAddress(new MailAddressFileReader(args[i + 1]));
                     }catch (Exception e){
                         throw new RuntimeException("Impossible de créer l'objet mailAddress : " + e);
@@ -343,5 +363,28 @@ public class CmdHandler {
         ch.run();
 
         return 1;
+    }
+
+    // Clear console
+    public static void clearConsole() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            // Clear the console based on the operating system
+            if (os.contains("win")) {
+                // For Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+                // For Unix-like systems (Linux, macOS)
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            } else {
+                // Default: simply print a bunch of new lines
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            // Handle exceptions if any
+            e.printStackTrace();
+        }
     }
 }
