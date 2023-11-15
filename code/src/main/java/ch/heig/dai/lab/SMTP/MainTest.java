@@ -2,15 +2,20 @@ package ch.heig.dai.lab.SMTP;
 
 public class MainTest {
     public static void main(String[] args) {
-        args = new String[]{
+        /*args = new String[]{
                 "--ip", "localhost",
                 "-p", "1025",
                 "-g", "3",
-                "-m", "1"//,
-                //"-ma", "C:\\HEIG\\Semestre 3\\DAI\\Laboratoire\\DAI-Lab04-SMTP\\Data\\mailAddress.txt",
-                //"-mc", "C:\\HEIG\\Semestre 3\\DAI\\Laboratoire\\DAI-Lab04-SMTP\\Data\\MailingCore.txt"
-        };
+                "-m", "1",
+                "-ma", "C:\\HEIG\\Semestre 3\\DAI\\Laboratoire\\DAI-Lab04-SMTP\\Data\\mailAddress.txt",
+                "-mc", "H:\\Beat Saber (v1.24.0 + ALL DLCs)\\Data\\MailingCore.txt"
+        };*/
+
         CmdHandler cmdh = new CmdHandler(args);
+
+        for(var a : args){
+            System.out.println(a);
+        }
 
         //cmdh.run();
 

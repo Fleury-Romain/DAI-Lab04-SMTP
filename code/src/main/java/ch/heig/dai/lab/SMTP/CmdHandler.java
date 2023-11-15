@@ -1,10 +1,5 @@
 package ch.heig.dai.lab.SMTP;
 
-import javax.management.Query;
-import javax.management.relation.RoleInfoNotFoundException;
-import java.io.IOException;
-import java.security.spec.ECField;
-import java.util.List;
 import java.util.Scanner;
 
 public class CmdHandler {
@@ -14,9 +9,10 @@ public class CmdHandler {
     private MailAddress mailAddress;
     private MailContent mailContent;
     private int groupe;
+    private int groupeSize;
     private int mail;
 
-    private enum Data{IP, PORT, MAILADDRESS, MAILCONTENT, GROUPE, MAIL};
+    private enum Data{IP, PORT, MAILADDRESS, MAILCONTENT, GROUPE, MAIL, GROUPESIZE};
 
     public CmdHandler(String[] args){
         this.args = args;
@@ -46,17 +42,17 @@ public class CmdHandler {
     }
 
     private int consoleTotale(){
-
         // process les commandes
         Scanner sc = new Scanner(System.in);
         String line = null;
         do { // FIXME effacer la console entre chaque affichage de l'app (cls/clear)
             // Affichage ddu menu principal de l'application
+            clearScreen();
             displayApp();
-
-            System.out.print("Cmd > ");
-            line = sc.nextLine();
             appCommand(line);
+
+            System.out.print("\nCmd > ");
+            line = sc.nextLine();
         }while(!line.contains("exit"));
 
         return 1;
@@ -69,22 +65,32 @@ public class CmdHandler {
 
     private void appCommand(String cmd){
         // FIXME vérifier la validité de la commande passé (nbr params, etc ...)
+        if(cmd == null){return;}
         String[] cmdargs = cmd.split(" ");
 
         if(cmdargs[0].equals("set")){ // Commande d'initialisation
+            // Parsing du filepath dans les arguments
+            if(cmdargs[2].contains("\"")){
+                for(int i = 3; i < cmdargs.length; i++){
+                    cmdargs[2] = new String(cmdargs[i] + " " + cmdargs[i]);
+                }
+                cmdargs[2] = cmdargs[2].replace("\"", "");
+            }
+
+            // Traitement de la commande
             if(cmdargs[1].equals("ip")){
                 setIP(cmdargs[2]);
             } else if (cmdargs[1].equals("port")) {
                 this.port = Integer.parseInt(cmdargs[2]);
             } else if (cmdargs[1].equals("mailaddress")) {
                 try{
-                    this.mailAddress = new MailAddress(new MailAddressFileReader(cmdargs[2]));
+                    this.mailAddress = new MailAddress(new MailAddressFileReader(cmdargs[2]), groupe, groupeSize);
                 }catch(Exception e){
                     throw new RuntimeException("Impossible de créer l'objet mailaddress : " + e);
                 }
             } else if (cmdargs[1].equals("mailcontent")) {
                 try{
-                    this.mailContent = new MailContent(new MailContentFileReader(cmdargs[2]));
+                    this.mailContent = new MailContent(new MailContentFileReader(cmdargs[2]), mail);
                 }catch(Exception e){
                     throw new RuntimeException("Impossible de créer l'objet mailcontent : " + e);
                 }
@@ -92,6 +98,8 @@ public class CmdHandler {
                 this.groupe = Integer.parseInt(cmdargs[2]);
             } else if (cmdargs[1].equals("mail")) {
                 this.mail = Integer.parseInt(cmdargs[2]);
+            } else if (cmdargs[1].equals("size")){
+                this.groupeSize = Integer.parseInt(cmdargs[2]);
             }
         } else if (cmdargs[0].equals("get")) {
             if(mailAddress == null || mailContent == null){return;}
@@ -143,14 +151,14 @@ public class CmdHandler {
     }
     private void setMailAddress(String filePath){
         try {
-            mailAddress = new MailAddress(new MailAddressFileReader(filePath));
+            mailAddress = new MailAddress(new MailAddressFileReader(filePath), groupe, groupeSize);
         }catch (Exception e){
             throw new RuntimeException("Impossible de créer l'objet mailAddress : " + e);
         }
     }
     private void setMailContent(String filePath){
         try{
-            mailContent = new MailContent(new MailContentFileReader(filePath));
+            mailContent = new MailContent(new MailContentFileReader(filePath), mail);
         }catch(Exception e){
             throw new RuntimeException("Impossible de créer l'objet mailContent : " + e);
         }
@@ -217,6 +225,9 @@ public class CmdHandler {
                 if(mail != 0){ return String.format("%-7s : %d" ,"OK", mail); }
                 else if (mail == -1) { return  String.format("%-7s : %s" ,"OK", "Aléatoire"); }
                 break;
+            case GROUPESIZE:
+                if(groupeSize != 0){ return String.format("%-7s : %d", "OK", groupeSize); }
+                break;
         }
 
         return "missing";
@@ -236,14 +247,14 @@ public class CmdHandler {
                 case "-ma":
                 case "--mailaddress":
                     try {
-                        mailAddress = new MailAddress(new MailAddressFileReader(args[i + 1]));
+                        mailAddress = new MailAddress(new MailAddressFileReader(args[i + 1]), groupe, groupeSize);
                     }catch (Exception e){
                         throw new RuntimeException("Impossible de créer l'objet mailAddress : " + e);
                     }
                 case "-mc":
                 case "--mailcontent":
                     try{
-                        mailContent = new MailContent(new MailContentFileReader(args[i+1]));
+                        mailContent = new MailContent(new MailContentFileReader(args[i+1]), mail);
                     }catch (Exception e){
                         throw new RuntimeException("Impossible de créer l'objet mailContent");
                     }
@@ -256,7 +267,11 @@ public class CmdHandler {
                 case "--mail":
                     mail = Integer.parseInt(args[i+1]);
                     break;
-
+                case "-gs":
+                case "--groupesize":
+                    if(mailAddress != null){mailAddress.groupeSize = Integer.parseInt(args[i+1]); }
+                    groupeSize = Integer.parseInt(args[i+1]);
+                    break;
             }
         }
     }
@@ -273,14 +288,14 @@ public class CmdHandler {
         }
         if(mailAddress == null){
             try {
-                mailAddress = new MailAddress(new MailAddressFileReader(getData(sc, Data.MAILADDRESS)));
+                mailAddress = new MailAddress(new MailAddressFileReader(getData(sc, Data.MAILADDRESS)), groupe, groupeSize);
             }catch (Exception e){
                 throw new RuntimeException("Impossible de créer l'objte mailAddress : " + e);
             }
         }
         if(mailContent == null){
             try{
-                mailContent = new MailContent(new MailContentFileReader(getData(sc, Data.MAILCONTENT)));
+                mailContent = new MailContent(new MailContentFileReader(getData(sc, Data.MAILCONTENT)), mail);
             }catch(Exception e){
                 throw new RuntimeException("Impossible de créer l'objet malContent : " + e);
             }
@@ -292,6 +307,9 @@ public class CmdHandler {
         if(mail == 0){
             // Aléatoire par défaut
             mail = -1;
+        }
+        if(groupeSize == 0){
+            groupeSize = mailAddress.getGroupeSize();
         }
 
         return Boolean.TRUE;
@@ -333,15 +351,35 @@ public class CmdHandler {
                     data = sc.nextLine();
                 } while (Integer.parseInt(data) < 0 || Integer.parseInt(data) > mailContent.getNbr());
                 break;
-
+            case GROUPESIZE:
+                do{
+                    System.out.println("Input a valid groupe size (max :" + mailAddress.getTo(groupe).size());
+                    data = sc.nextLine();
+                }while(Integer.parseInt(data) <= 0 || Integer.parseInt(data) > mailAddress.getTo(groupe).size());
         }
         return data;
     }
 
     private int smtpConnect(){
-        ConnectionHandler ch = new ConnectionHandler(ip, port, mailAddress, mailContent);
+        ConnectionHandler ch = new ConnectionHandler(ip, port, mailAddress, mailContent, groupe, groupeSize, mail);
         ch.run();
 
         return 1;
+    }
+    // Clear the terminal screen
+    public static void clearScreen() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // For Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // For Unix, Linux, Mac OS
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (Exception e) {
+            System.out.println("Error clearing the terminal: " + e.getMessage());
+        }
     }
 }
