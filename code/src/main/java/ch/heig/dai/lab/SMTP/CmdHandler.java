@@ -6,8 +6,8 @@ public class CmdHandler {
     private String[] args;
     private String ip;
     private int port;
-    private MailAddress mailAddress;
-    private MailContent mailContent;
+    private MailAddress mailAddress = null;
+    private MailContent mailContent = null;
     private int groupe;
     private int groupeSize;
     private int mail;
@@ -16,8 +16,6 @@ public class CmdHandler {
 
     public CmdHandler(String[] args){
         this.args = args;
-        argsParser();
-        consoleTotale();
     }
 
     /**
@@ -30,37 +28,31 @@ public class CmdHandler {
         }else { // avec certain argument, parse + envoyé direct par défaut
             // Récupération des arguments
             argsParser();
+            // on vérifie que tous les paramètres sont valides avant de
+            // lancer la connection smtp
+            if(argsChecker()) {
+                // Lancement de la connection SMTP
+                smtpConnect();
+            }
         }
-
-        // on vérifie que tous les paramètres sont valides avant de
-        // lancer la connection smtp
-        if(argsChecker()) {
-            // Lancement de la connection SMTP
-            smtpConnect();
-        }
-
     }
 
     private int consoleTotale(){
         // process les commandes
         Scanner sc = new Scanner(System.in);
         String line = null;
-        do { // FIXME effacer la console entre chaque affichage de l'app (cls/clear)
+        do {
             // Affichage ddu menu principal de l'application
             clearScreen();
-            displayApp();
-            appCommand(line);
+            displayHeader();
+            appCommand(line);System.out.println();
+            displayArgs();
 
-            System.out.print("\nCmd > ");
+            System.out.print("Cmd > ");
             line = sc.nextLine();
         }while(!line.contains("exit"));
 
         return 1;
-    }
-
-    private void displayApp(){
-        displayHeader();
-        displayArgs();
     }
 
     private void appCommand(String cmd){
@@ -72,7 +64,7 @@ public class CmdHandler {
             // Parsing du filepath dans les arguments
             if(cmdargs[2].contains("\"")){
                 for(int i = 3; i < cmdargs.length; i++){
-                    cmdargs[2] = new String(cmdargs[i] + " " + cmdargs[i]);
+                    cmdargs[2] = new String(cmdargs[2] + " " + cmdargs[i]);
                 }
                 cmdargs[2] = cmdargs[2].replace("\"", "");
             }
@@ -81,23 +73,15 @@ public class CmdHandler {
             if(cmdargs[1].equals("ip")){
                 setIP(cmdargs[2]);
             } else if (cmdargs[1].equals("port")) {
-                this.port = Integer.parseInt(cmdargs[2]);
+                setPort(Integer.parseInt(cmdargs[2]));
             } else if (cmdargs[1].equals("mailaddress")) {
-                try{
-                    this.mailAddress = new MailAddress(new MailAddressFileReader(cmdargs[2]), groupe, groupeSize);
-                }catch(Exception e){
-                    throw new RuntimeException("Impossible de créer l'objet mailaddress : " + e);
-                }
+                setMailAddress(cmdargs[2]);
             } else if (cmdargs[1].equals("mailcontent")) {
-                try{
-                    this.mailContent = new MailContent(new MailContentFileReader(cmdargs[2]), mail);
-                }catch(Exception e){
-                    throw new RuntimeException("Impossible de créer l'objet mailcontent : " + e);
-                }
+                setMailContent(cmdargs[2]);
             } else if (cmdargs[1].equals("groupe")) {
-                this.groupe = Integer.parseInt(cmdargs[2]);
+                setGroupe(Integer.parseInt(cmdargs[2]));
             } else if (cmdargs[1].equals("mail")) {
-                this.mail = Integer.parseInt(cmdargs[2]);
+                setMail(Integer.parseInt(cmdargs[2]));
             } else if (cmdargs[1].equals("size")){
                 this.groupeSize = Integer.parseInt(cmdargs[2]);
             }
@@ -167,7 +151,7 @@ public class CmdHandler {
         if(mailAddress == null){
             System.out.println("Veuillez d'abord renseigner un fichier d'adresse !");
         }else{
-            if(groupe > 0 && groupe < mailAddress.getNbrGroupe()){
+            if(groupe > 0 && groupe <= mailAddress.getNbrGroupe()){
                 this.groupe = groupe;
             }else{
                 System.out.println("La valeur spécifié ne correspond pas à un groupe valide");
@@ -251,6 +235,7 @@ public class CmdHandler {
                     }catch (Exception e){
                         throw new RuntimeException("Impossible de créer l'objet mailAddress : " + e);
                     }
+                    break;
                 case "-mc":
                 case "--mailcontent":
                     try{
@@ -269,7 +254,6 @@ public class CmdHandler {
                     break;
                 case "-gs":
                 case "--groupesize":
-                    if(mailAddress != null){mailAddress.groupeSize = Integer.parseInt(args[i+1]); }
                     groupeSize = Integer.parseInt(args[i+1]);
                     break;
             }
@@ -309,11 +293,12 @@ public class CmdHandler {
             mail = -1;
         }
         if(groupeSize == 0){
-            groupeSize = mailAddress.getGroupeSize();
+            groupeSize = 1;
         }
 
         return Boolean.TRUE;
     }
+
     private String getData(Scanner sc, Data d){
         String data = null;
         switch (d) {
@@ -331,12 +316,14 @@ public class CmdHandler {
                 do {
                     System.out.print("Input a valid mailaddress file : ");
                     data = sc.nextLine();
+                    data = data.replace("\"", "");
                 } while (!data.contains(".txt"));
                 break;
             case MAILCONTENT:
                 do {
                     System.out.print("Input a valid mailcontent file  : ");
                     data = sc.nextLine();
+                    data = data.replace("\"", "");
                 } while (!data.contains(".txt"));
                 break;
             case GROUPE:

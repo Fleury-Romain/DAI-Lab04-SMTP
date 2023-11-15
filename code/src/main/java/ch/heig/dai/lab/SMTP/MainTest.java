@@ -13,11 +13,7 @@ public class MainTest {
 
         CmdHandler cmdh = new CmdHandler(args);
 
-        for(var a : args){
-            System.out.println(a);
-        }
-
-        //cmdh.run();
+        cmdh.run();
 
        /* try (
                 MailContentFileReader mcfr = new MailContentFileReader("C:\\HEIG\\Semestre 3\\DAI\\Laboratoire\\DAI-Lab04-SMTP\\Data\\MailingCore.txt");
