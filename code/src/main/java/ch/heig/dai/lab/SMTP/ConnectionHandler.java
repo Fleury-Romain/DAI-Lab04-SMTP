@@ -13,7 +13,6 @@ public class ConnectionHandler {
     private final int addressID;
     private final int nbrTo;
     private final int contentID;
-    private Random rand = new Random();
 
 
     public ConnectionHandler(String ip, int port, MailAddress mailAddress, MailContent mailContent, int addressID, int nbrTo, int contentID){
@@ -22,6 +21,7 @@ public class ConnectionHandler {
         this.mailAddress = mailAddress;
         this.mailContent = mailContent;
 
+        Random rand = new Random();
         if(addressID > -1) {
             this.addressID = addressID - 1;
         }else{
@@ -56,6 +56,8 @@ public class ConnectionHandler {
                         break;
                     }
                 }
+                // Warning, mais a cette étape nous somme sûre
+                // qu'il y a encore une ligne (!=null)
                 if(line.contains("221")){ break; }
                 SMTPhandler(out, flag);
             }

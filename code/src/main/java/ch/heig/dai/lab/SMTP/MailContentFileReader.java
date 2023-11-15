@@ -6,8 +6,8 @@ import java.util.List;
 
 public class MailContentFileReader implements AutoCloseable {
     private BufferedReader file;
-    private List<String> subjects;
-    private List<String> contents;
+    private final List<String> subjects;
+    private final List<String> contents;
 
     MailContentFileReader(String filePath) throws IOException {
         subjects = retrieveSubjects(filePath);

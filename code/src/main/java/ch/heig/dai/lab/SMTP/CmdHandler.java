@@ -3,7 +3,7 @@ package ch.heig.dai.lab.SMTP;
 import java.util.Scanner;
 
 public class CmdHandler {
-    private String[] args;
+    private final String[] args;
     private String ip;
     private int port;
     private MailAddress mailAddress = null;
@@ -12,16 +12,12 @@ public class CmdHandler {
     private int groupeSize;
     private int mail;
 
-    private enum Data{IP, PORT, MAILADDRESS, MAILCONTENT, GROUPE, MAIL, GROUPESIZE};
+    private enum Data{IP, PORT, MAILADDRESS, MAILCONTENT, GROUPE, MAIL, GROUPESIZE}
 
     public CmdHandler(String[] args){
         this.args = args;
     }
 
-    /**
-     * Gère l'ensemble du programme en fonction des arguments présents.
-     * @return int Status code
-     */
     public void run()  {
         if(args.length == 0){ // pas d'argument, entrée dans l'application en ligne de commande
             consoleTotale();
@@ -37,7 +33,7 @@ public class CmdHandler {
         }
     }
 
-    private int consoleTotale(){
+    private void consoleTotale(){
         // process les commandes
         Scanner sc = new Scanner(System.in);
         String line = null;
@@ -51,8 +47,6 @@ public class CmdHandler {
             System.out.print("Cmd > ");
             line = sc.nextLine();
         }while(!line.contains("exit"));
-
-        return 1;
     }
 
     private void appCommand(String cmd){
@@ -60,65 +54,65 @@ public class CmdHandler {
         if(cmd == null){return;}
         String[] cmdargs = cmd.split(" ");
 
-        if(cmdargs[0].equals("set")){ // Commande d'initialisation
-            // Parsing du filepath dans les arguments
-            if(cmdargs[2].contains("\"")){
-                for(int i = 3; i < cmdargs.length; i++){
-                    cmdargs[2] = new String(cmdargs[2] + " " + cmdargs[i]);
-                }
-                cmdargs[2] = cmdargs[2].replace("\"", "");
-            }
-
-            // Traitement de la commande
-            if(cmdargs[1].equals("ip")){
-                setIP(cmdargs[2]);
-            } else if (cmdargs[1].equals("port")) {
-                setPort(Integer.parseInt(cmdargs[2]));
-            } else if (cmdargs[1].equals("mailaddress")) {
-                setMailAddress(cmdargs[2]);
-            } else if (cmdargs[1].equals("mailcontent")) {
-                setMailContent(cmdargs[2]);
-            } else if (cmdargs[1].equals("groupe")) {
-                setGroupe(Integer.parseInt(cmdargs[2]));
-            } else if (cmdargs[1].equals("mail")) {
-                setMail(Integer.parseInt(cmdargs[2]));
-            } else if (cmdargs[1].equals("size")){
-                this.groupeSize = Integer.parseInt(cmdargs[2]);
-            }
-        } else if (cmdargs[0].equals("get")) {
-            if(mailAddress == null || mailContent == null){return;}
-
-            // FIXME vérifier que l'argument est bien dans la plage du nombre d'élements (groupe/mail)
-            if(cmdargs[1].equals("groupe")){
-                if(cmdargs.length > 2){
-                    System.out.println("From : " + mailAddress.getFrom(Integer.parseInt(cmdargs[2])));
-                    for(String s: mailAddress.getTo(Integer.parseInt(cmdargs[2]))){
-                        System.out.println("To : " + s);
+        switch (cmdargs[0]) {
+            case "set" -> {  // Commande d'initialisation
+                // Parsing du filepath dans les arguments
+                if (cmdargs[2].contains("\"")) {
+                    for (int i = 3; i < cmdargs.length; i++) {
+                        cmdargs[2] = cmdargs[2] + " " + cmdargs[i];
                     }
-                }else{
-                    for(int i = 0; i < mailAddress.getNbrGroupe(); i++){
-                        System.out.println("From : " + mailAddress.getFrom(i));
-                        for(String s: mailAddress.getTo(i)){
+                    cmdargs[2] = cmdargs[2].replace("\"", "");
+                }
+
+                // Traitement de la commande
+                switch (cmdargs[1]) {
+                    case "ip" -> setIP(cmdargs[2]);
+                    case "port" -> setPort(Integer.parseInt(cmdargs[2]));
+                    case "mailaddress" -> setMailAddress(cmdargs[2]);
+                    case "mailcontent" -> setMailContent(cmdargs[2]);
+                    case "groupe" -> setGroupe(Integer.parseInt(cmdargs[2]));
+                    case "mail" -> setMail(Integer.parseInt(cmdargs[2]));
+                    case "size" -> this.groupeSize = Integer.parseInt(cmdargs[2]);
+                }
+            }
+            case "get" -> {
+                if (mailAddress == null || mailContent == null) {
+                    return;
+                }
+
+                // FIXME vérifier que l'argument est bien dans la plage du nombre d'élements (groupe/mail)
+                if (cmdargs[1].equals("groupe")) {
+                    if (cmdargs.length > 2) {
+                        System.out.println("From : " + mailAddress.getFrom(Integer.parseInt(cmdargs[2])));
+                        for (String s : mailAddress.getTo(Integer.parseInt(cmdargs[2]))) {
                             System.out.println("To : " + s);
+                        }
+                    } else {
+                        for (int i = 0; i < mailAddress.getNbrGroupe(); i++) {
+                            System.out.println("From : " + mailAddress.getFrom(i));
+                            for (String s : mailAddress.getTo(i)) {
+                                System.out.println("To : " + s);
+                            }
+                        }
+                    }
+                } else if (cmdargs[1].equals("mail")) {
+                    if (cmdargs.length > 2) {
+                        System.out.println("Mail #" + cmdargs[2]);
+                        System.out.println("Subject : " + mailContent.getSubject(Integer.parseInt(cmdargs[2])));
+                        System.out.println("Content : " + mailContent.getContent(Integer.parseInt(cmdargs[2])));
+                    } else {
+                        for (int i = 0; i < mailContent.getNbr(); i++) {
+                            System.out.println("Mail #" + i);
+                            System.out.println("Subject : " + mailContent.getSubject(i));
+                            System.out.println("Content : " + mailContent.getContent(i));
                         }
                     }
                 }
-            } else if (cmdargs[1].equals("mail")) {
-                if(cmdargs.length > 2){
-                    System.out.println("Mail #" + cmdargs[2]);
-                    System.out.println("Subject : " + mailContent.getSubject(Integer.parseInt(cmdargs[2])));
-                    System.out.println("Content : " + mailContent.getContent(Integer.parseInt(cmdargs[2])));
-                }else{
-                    for(int i = 0; i < mailContent.getNbr(); i++){
-                        System.out.println("Mail #" + i);
-                        System.out.println("Subject : " + mailContent.getSubject(i));
-                        System.out.println("Content : " + mailContent.getContent(i));
-                    }
-                }
             }
-        } else if (cmdargs[0].equals("send")) {
-            if(argsChecker()) {
-                smtpConnect();
+            case "send" -> {
+                if (argsChecker()) {
+                    smtpConnect();
+                }
             }
         }
     }
@@ -135,14 +129,14 @@ public class CmdHandler {
     }
     private void setMailAddress(String filePath){
         try {
-            mailAddress = new MailAddress(new MailAddressFileReader(filePath), groupe, groupeSize);
+            mailAddress = new MailAddress(new MailAddressFileReader(filePath));
         }catch (Exception e){
             throw new RuntimeException("Impossible de créer l'objet mailAddress : " + e);
         }
     }
     private void setMailContent(String filePath){
         try{
-            mailContent = new MailContent(new MailContentFileReader(filePath), mail);
+            mailContent = new MailContent(new MailContentFileReader(filePath));
         }catch(Exception e){
             throw new RuntimeException("Impossible de créer l'objet mailContent : " + e);
         }
@@ -171,18 +165,21 @@ public class CmdHandler {
     }
     private void displayHeader(){
         System.out.print(
-            "   _____   __  __   _______   _____    _____               _   _   _  __\n" +
-            "  / ____| |  \\/  | |__   __| |  __ \\  |  __ \\      /\\     | \\ | | | |/ /\n" +
-            " | (___   | \\  / |    | |    | |__) | | |__) |    /  \\    |  \\| | | ' / \n" +
-            "  \\___ \\  | |\\/| |    | |    |  ___/  |  _  /    / /\\ \\   | . ` | | <  \n" +
-            "  ____) | | |  | |    | |    | |      | | \\ \\   / ____ \\  | |\\  | | . \\\n" +
-            " |_____/  |_|  |_|    |_|    |_|      |_|  \\_\\ /_/    \\_\\ |_| \\_| |_|\\_\n\n"
+                """
+                           _____   __  __   _______   _____    _____               _   _   _  __
+                          / ____| |  \\/  | |__   __| |  __ \\  |  __ \\      /\\     | \\ | | | |/ /
+                         | (___   | \\  / |    | |    | |__) | | |__) |    /  \\    |  \\| | | ' /\s
+                          \\___ \\  | |\\/| |    | |    |  ___/  |  _  /    / /\\ \\   | . ` | | < \s
+                          ____) | | |  | |    | |    | |      | | \\ \\   / ____ \\  | |\\  | | . \\
+                         |_____/  |_|  |_|    |_|    |_|      |_|  \\_\\ /_/    \\_\\ |_| \\_| |_|\\_
+
+                        """
         );
     }
 
     private void displayArgs(){
         for(Data d : Data.values()){
-            System.out.print(String.format("%-25s : %s\n", d, getArgsStatus(d)));
+            System.out.printf("%-25s : %s\n", d, getArgsStatus(d));
         }
         System.out.println();
     }
@@ -202,11 +199,11 @@ public class CmdHandler {
                 if(mailContent != null){ return String.format("%-7s : %s" ,"OK", "#mail(" + mailContent.getNbr() + ")"); }
                 break;
             case GROUPE:
-                if(groupe != 0){ return String.format("%-7s : %d" ,"OK", groupe); }
+                if(groupe > 0){ return String.format("%-7s : %d" ,"OK", groupe); }
                 else if (groupe == -1) { return String.format("%-7s : %s" ,"OK", "Aléatoire"); }
                 break;
             case MAIL:
-                if(mail != 0){ return String.format("%-7s : %d" ,"OK", mail); }
+                if(mail > 0){ return String.format("%-7s : %d" ,"OK", mail); }
                 else if (mail == -1) { return  String.format("%-7s : %s" ,"OK", "Aléatoire"); }
                 break;
             case GROUPESIZE:
@@ -231,7 +228,7 @@ public class CmdHandler {
                 case "-ma":
                 case "--mailaddress":
                     try {
-                        mailAddress = new MailAddress(new MailAddressFileReader(args[i + 1]), groupe, groupeSize);
+                        mailAddress = new MailAddress(new MailAddressFileReader(args[i + 1]));
                     }catch (Exception e){
                         throw new RuntimeException("Impossible de créer l'objet mailAddress : " + e);
                     }
@@ -239,7 +236,7 @@ public class CmdHandler {
                 case "-mc":
                 case "--mailcontent":
                     try{
-                        mailContent = new MailContent(new MailContentFileReader(args[i+1]), mail);
+                        mailContent = new MailContent(new MailContentFileReader(args[i+1]));
                     }catch (Exception e){
                         throw new RuntimeException("Impossible de créer l'objet mailContent");
                     }
@@ -272,14 +269,14 @@ public class CmdHandler {
         }
         if(mailAddress == null){
             try {
-                mailAddress = new MailAddress(new MailAddressFileReader(getData(sc, Data.MAILADDRESS)), groupe, groupeSize);
+                mailAddress = new MailAddress(new MailAddressFileReader(getData(sc, Data.MAILADDRESS)));
             }catch (Exception e){
                 throw new RuntimeException("Impossible de créer l'objte mailAddress : " + e);
             }
         }
         if(mailContent == null){
             try{
-                mailContent = new MailContent(new MailContentFileReader(getData(sc, Data.MAILCONTENT)), mail);
+                mailContent = new MailContent(new MailContentFileReader(getData(sc, Data.MAILCONTENT)));
             }catch(Exception e){
                 throw new RuntimeException("Impossible de créer l'objet malContent : " + e);
             }
@@ -347,11 +344,9 @@ public class CmdHandler {
         return data;
     }
 
-    private int smtpConnect(){
+    private void smtpConnect(){
         ConnectionHandler ch = new ConnectionHandler(ip, port, mailAddress, mailContent, groupe, groupeSize, mail);
         ch.run();
-
-        return 1;
     }
     // Clear the terminal screen
     public static void clearScreen() {
