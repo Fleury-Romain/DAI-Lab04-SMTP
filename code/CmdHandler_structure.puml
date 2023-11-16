@@ -1,0 +1,197 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "ch.heig.dai.lab.SMTP",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "*",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "*",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "ch.heig.dai.lab.SMTP.CmdHandler",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_3198683 { 
+   	label=heig
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_885107207 { 
+   	label=dai
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   CmdHandler1745489629[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CmdHandler</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   args: String[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   groupe: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   groupeSize: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   ip: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mail: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mailAddress: MailAddress [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mailContent: MailContent [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   port: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- appCommand(cmd: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >- argsChecker(): Boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- argsParser()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ clearScreen()</TD></TR>
+<TR><TD ALIGN="LEFT" >- consoleTotale()</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayArgs()</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayHeader()</TD></TR>
+<TR><TD ALIGN="LEFT" >- getArgsStatus(d: Data): String</TD></TR>
+<TR><TD ALIGN="LEFT" >- getData(sc: Scanner, d: Data): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ run()</TD></TR>
+<TR><TD ALIGN="LEFT" >- smtpConnect()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ConnectionHandler1745489629[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ConnectionHandler</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   addressID: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   contentID: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   ip: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mailAddress: MailAddress [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   mailContent: MailContent [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   nbrTo: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   port: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- SMTPhandler(out: BufferedWriter, flag: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ run()</TD></TR>
+<TR><TD ALIGN="LEFT" >- send(out: BufferedWriter, msg: String)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MailAddress1745489629[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MailAddress</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   from: List&lt;String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   to: List&lt;List&lt;String&gt;&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getFrom(id: int): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getTo(id: int): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+MailContent1745489629[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)MailContent</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   contents: List&lt;String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   subjects: List&lt;String&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getContent(id: int): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getSubject(id: int): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+CmdHandler1745489629 -> ConnectionHandler1745489629[label="smtpConnect() -> run()"];
+CmdHandler1745489629 -> MailAddress1745489629[label="mailAddress
+[0..1]"];
+CmdHandler1745489629 -> MailContent1745489629[label="mailContent
+[0..1]"];
+ConnectionHandler1745489629 -> MailAddress1745489629[label="mailAddress
+[0..1]"];
+ConnectionHandler1745489629 -> MailContent1745489629[label="mailContent
+[0..1]"];
+    
+}
+@enduml
