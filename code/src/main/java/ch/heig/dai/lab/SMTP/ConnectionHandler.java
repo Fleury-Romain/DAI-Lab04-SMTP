@@ -14,12 +14,16 @@ public class ConnectionHandler {
     private final int nbrTo;
     private final int contentID;
 
+    private final int nbMail;
 
-    public ConnectionHandler(String ip, int port, MailAddress mailAddress, MailContent mailContent, int addressID, int nbrTo, int contentID){
+
+    public ConnectionHandler(String ip, int port, MailAddress mailAddress, MailContent mailContent, int addressID, int nbrTo, int contentID, int nbMail){
         this.ip = ip;
         this.port = port;
         this.mailAddress = mailAddress;
         this.mailContent = mailContent;
+
+        this.nbMail = nbMail;
 
         Random rand = new Random();
         if(addressID > -1) {

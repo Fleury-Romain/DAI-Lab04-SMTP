@@ -11,8 +11,9 @@ public class CmdHandler {
     private int groupe;
     private int groupeSize;
     private int mail;
+    private int nbmail;
 
-    private enum Data{IP, PORT, MAILADDRESS, MAILCONTENT, GROUPE, MAIL, GROUPESIZE}
+    private enum Data{IP, PORT, MAILADDRESS, MAILCONTENT, GROUPE, MAIL, GROUPESIZE, NBMAIL}
 
     public CmdHandler(String[] args){
         this.args = args;
@@ -72,7 +73,8 @@ public class CmdHandler {
                     case "mailcontent" -> setMailContent(cmdargs[2]);
                     case "groupe" -> setGroupe(Integer.parseInt(cmdargs[2]));
                     case "mail" -> setMail(Integer.parseInt(cmdargs[2]));
-                    case "size" -> this.groupeSize = Integer.parseInt(cmdargs[2]);
+                    case "size" -> this.groupeSize = Integer.parseInt(cmdargs[2]); // TODO changer pour une fonction propre avec vérification !
+                    case "nbmail" -> setNbMail(Integer.parseInt(cmdargs[2]));
                 }
             }
             case "get" -> {
@@ -163,6 +165,12 @@ public class CmdHandler {
             }
         }
     }
+
+    private void setNbMail(int nb){
+        if(nb > 0){
+            nbmail = nb;
+        }
+    }
     private void displayHeader(){
         System.out.print(
                 """
@@ -209,6 +217,9 @@ public class CmdHandler {
             case GROUPESIZE:
                 if(groupeSize != 0){ return String.format("%-7s : %d", "OK", groupeSize); }
                 break;
+            case NBMAIL:
+                if(nbmail != 0){ return String.format("%-7s : : %d", "OK", nbmail); }
+                break;
         }
 
         return "missing";
@@ -253,6 +264,10 @@ public class CmdHandler {
                 case "--groupesize":
                     groupeSize = Integer.parseInt(args[i+1]);
                     break;
+                case "-nm":
+                case "--nombremail":
+                    nbmail = Integer.parseInt(args[i+1]);
+                    break;
             }
         }
     }
@@ -291,6 +306,10 @@ public class CmdHandler {
         }
         if(groupeSize == 0){
             groupeSize = 1;
+        }
+
+        if(nbmail == 0){
+            nbmail = 1;
         }
 
         return Boolean.TRUE;
@@ -340,13 +359,17 @@ public class CmdHandler {
                     System.out.println("Input a valid groupe size (max :" + mailAddress.getTo(groupe).size());
                     data = sc.nextLine();
                 }while(Integer.parseInt(data) <= 0 || Integer.parseInt(data) > mailAddress.getTo(groupe).size());
+
         }
         return data;
     }
 
     private void smtpConnect(){
-        ConnectionHandler ch = new ConnectionHandler(ip, port, mailAddress, mailContent, groupe, groupeSize, mail);
-        ch.run();
+        ConnectionHandler ch = new ConnectionHandler(ip, port, mailAddress, mailContent, groupe, groupeSize, mail, nbmail);
+
+        for(int i = 0; i < nbmail; i++){
+            ch.run();
+        }
     }
     // Clear the terminal screen
     public static void clearScreen() {
