@@ -1,5 +1,6 @@
 package ch.heig.dai.lab.SMTP;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CmdHandler {
@@ -50,10 +51,93 @@ public class CmdHandler {
         }while(!line.contains("exit"));
     }
 
+    /**
+     * Vérifie que les arguments de la commande sont valides
+     * @param args arguments de la commande
+     * @return true si les arguments sont valides, false sinon
+     */
+    private boolean cmdArgsHandler(String[] args){
+        switch(args[0]) {
+            case "set" :
+                if (args.length != 3) {
+                    System.out.println("Nombre d'arguments incorrect !");
+                    return false;
+                }
+                String[] setArgs = {"ip", "port", "mailaddress", "mailcontent", "groupe", "mail", "size", "nbmail"};
+                if (!Arrays.asList(setArgs).contains(args[1])) {
+                    System.out.println("Commande invalide !");
+                    return false;
+                }
+                break;
+                /*
+                port : nombre positif
+                groupe : nombre positif
+                mail : nombre positif
+                size : nombre positif
+                nbmail : nombre positif
+                 */
+                // y a-t-il des valeurs pour lesquelles port, mailaddress, mailcontent, groupe, mail, size, nbmail sont invalides ?
+            case "get" :
+                if (args.length < 2 || args.length > 3) {
+                    System.out.println("Nombre d'arguments incorrect !");
+                    return false;
+                }
+                switch (args[1]) {
+                    case "groupe" :
+                        if (mailAddress == null) {
+                            System.out.println("Champs 'groupe' non rempli !");
+                            return false;
+                        }
+                        if (args.length == 3) {
+                            try {
+                                Integer.parseInt(args[2]);
+                            } catch (NumberFormatException e) {
+                                System.out.println("L'argument du groupe doit être un entier positif !");
+                                return false;
+                            }
+                            if (Integer.parseInt(args[2]) >= mailAddress.getNbrGroupe()) {
+                                System.out.println("Numéro du groupe invalide !");
+                            }
+                            return false;
+                        }
+                        break;
+                    case "mail" :
+                        if (mailContent == null) {
+                            System.out.println("Champs 'mail' non rempli !");
+                            return false;
+                        }
+                        if (args.length == 3 && Integer.parseInt(args[2]) >= mailContent.getNbr()) {
+                            System.out.println("Numéro de mail invalide !");
+                            return false;
+                        }
+                        break;
+                    default :
+                        System.out.println("Commande invalide !");
+                        return false;
+                }
+                break;
+            case "send" :
+                if (args.length > 1) {
+                    System.out.println("La commande 'send' ne requiert aucun argument !");
+                    return false;
+                }
+                break;
+            default :
+                System.out.println("Commande non supportée !");
+                return false;
+        }
+        return true;
+    }
+
     private void appCommand(String cmd){
-        // FIXME vérifier la validité de la commande passé (nbr params, etc ...)
-        if(cmd == null){return;}
+        if(cmd == null){
+            return;
+        }
         String[] cmdargs = cmd.split(" ");
+
+        if (!cmdArgsHandler(cmdargs)){
+            return;
+        }
 
         switch (cmdargs[0]) {
             case "set" -> {  // Commande d'initialisation
@@ -82,9 +166,8 @@ public class CmdHandler {
                     return;
                 }
 
-                // FIXME vérifier que l'argument est bien dans la plage du nombre d'élements (groupe/mail)
                 if (cmdargs[1].equals("groupe")) {
-                    if (cmdargs.length > 2) {
+                    if (cmdargs.length == 3) {
                         System.out.println("From : " + mailAddress.getFrom(Integer.parseInt(cmdargs[2])));
                         for (String s : mailAddress.getTo(Integer.parseInt(cmdargs[2]))) {
                             System.out.println("To : " + s);
@@ -98,7 +181,7 @@ public class CmdHandler {
                         }
                     }
                 } else if (cmdargs[1].equals("mail")) {
-                    if (cmdargs.length > 2) {
+                    if (cmdargs.length == 3) {
                         System.out.println("Mail #" + cmdargs[2]);
                         System.out.println("Subject : " + mailContent.getSubject(Integer.parseInt(cmdargs[2])));
                         System.out.println("Content : " + mailContent.getContent(Integer.parseInt(cmdargs[2])));
@@ -276,7 +359,7 @@ public class CmdHandler {
         Scanner sc = new Scanner(System.in);
         if(ip == null){
             // Localhost par défaut
-            ip = "locahost";
+            ip = "localhost";
         }
         if(port == 0){
             // 1025 (maildev) par défaut
@@ -286,14 +369,14 @@ public class CmdHandler {
             try {
                 mailAddress = new MailAddress(new MailAddressFileReader(getData(sc, Data.MAILADDRESS)));
             }catch (Exception e){
-                throw new RuntimeException("Impossible de créer l'objte mailAddress : " + e);
+                throw new RuntimeException("Impossible de créer l'objet mailAddress : " + e);
             }
         }
         if(mailContent == null){
             try{
                 mailContent = new MailContent(new MailContentFileReader(getData(sc, Data.MAILCONTENT)));
             }catch(Exception e){
-                throw new RuntimeException("Impossible de créer l'objet malContent : " + e);
+                throw new RuntimeException("Impossible de créer l'objet mailContent : " + e);
             }
         }
         if(groupe == 0){
