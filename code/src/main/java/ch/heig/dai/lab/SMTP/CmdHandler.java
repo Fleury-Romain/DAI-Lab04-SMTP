@@ -365,7 +365,7 @@ public class CmdHandler {
     }
 
     private void smtpConnect(){
-        ConnectionHandler ch = new ConnectionHandler(ip, port, mailAddress, mailContent, groupe, groupeSize, mail, nbmail);
+        ConnectionHandler ch = new ConnectionHandler(ip, port, mailAddress, mailContent, groupe, groupeSize, mail);
 
         for(int i = 0; i < nbmail; i++){
             ch.run();

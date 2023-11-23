@@ -12,20 +12,18 @@ public class ConnectionHandler {
     private final MailContent mailContent;
     private final int addressID;
     private final int nbrTo;
-    private final int contentID;
+    private int contentID;
 
-    private final int nbMail;
+    private final int isRandom;
+    Random rand = new Random();
 
 
-    public ConnectionHandler(String ip, int port, MailAddress mailAddress, MailContent mailContent, int addressID, int nbrTo, int contentID, int nbMail){
+    public ConnectionHandler(String ip, int port, MailAddress mailAddress, MailContent mailContent, int addressID, int nbrTo, int contentID){
         this.ip = ip;
         this.port = port;
         this.mailAddress = mailAddress;
         this.mailContent = mailContent;
 
-        this.nbMail = nbMail;
-
-        Random rand = new Random();
         if(addressID > -1) {
             this.addressID = addressID - 1;
         }else{
@@ -34,13 +32,19 @@ public class ConnectionHandler {
         this.nbrTo = nbrTo;
         if(contentID > -1){
             this.contentID = contentID - 1;
+            isRandom = 0;
         }else{
-            this.contentID = rand.nextInt(mailContent.getNbr());
+            isRandom = 1;
         }
 
     }
 
     public void run(){
+        // set random
+        if(isRandom == 1){
+            contentID = rand.nextInt(mailContent.getNbr());
+        }
+
         try(
             Socket s = new Socket(ip, port);
             var in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
