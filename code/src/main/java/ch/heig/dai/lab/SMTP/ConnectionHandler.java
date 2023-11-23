@@ -108,7 +108,6 @@ public class ConnectionHandler {
                 break;
             case 5:
                 send(out, "SUBJECT: " + "=?UTF-8?B?"+ Base64.getEncoder().encodeToString(mailContent.getSubject(contentID).getBytes()) + "?=" + "\n");
-                String subject = "=?UTF-8?B?" + java.util.Base64.getEncoder().encodeToString("Sujet avec des caractères non-ASCII".getBytes()) + "?=";
                 send(out, "FROM: <" + mailAddress.getFrom(addressID) + ">\n");
                 for(int i = 0; i < nbrTo; i++) {
                     send(out, "TO: <" + mailAddress.getTo(addressID).get(i) + ">\n"); // ajouter de nouveaux destinataire
