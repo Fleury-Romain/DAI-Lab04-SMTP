@@ -6,3 +6,9 @@ receiver:romain.fleury@etml-es.ch
 receiver:romain_0017@hotmail.com
 
 # Groupe 2
+
+sender:chuck@noris.ch
+receiver:maman@noris.ch
+receiver:papa@noris.ch
+receiver:cousin@noris.ch
+receiver:frere@noris.ch 
