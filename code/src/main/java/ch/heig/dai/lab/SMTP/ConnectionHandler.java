@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
+import java.util.Base64;
 
 public class ConnectionHandler {
     private final String ip;
@@ -106,12 +107,14 @@ public class ConnectionHandler {
                 send(out, "DATA\n");
                 break;
             case 5:
+                send(out, "SUBJECT: " + "=?UTF-8?B?"+ Base64.getEncoder().encodeToString(mailContent.getSubject(contentID).getBytes()) + "?=" + "\n");
+                String subject = "=?UTF-8?B?" + java.util.Base64.getEncoder().encodeToString("Sujet avec des caractères non-ASCII".getBytes()) + "?=";
                 send(out, "FROM: <" + mailAddress.getFrom(addressID) + ">\n");
                 for(int i = 0; i < nbrTo; i++) {
                     send(out, "TO: <" + mailAddress.getTo(addressID).get(i) + ">\n"); // ajouter de nouveaux destinataire
                 }
                 send(out, "DATE: April 1st, 2021\n");
-                send(out, "SUBJECT: " + mailContent.getSubject(contentID) + "\n\n");
+                send(out, "Content-Type: text/plain; charset=utf-8\n\n");
                 send(out, mailContent.getContent(contentID) + "\n");
                 send(out, "\r\n.\r\n");
                 break;
