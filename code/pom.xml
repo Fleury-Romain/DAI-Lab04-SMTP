@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.heig.dai.lab.SMTP</groupId>
-    <artifactId>smptClient</artifactId>
+    <artifactId>SMTPrank</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -22,7 +22,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ch.heig.dai.lab.SMTP.MainTest</mainClass>
+                            <mainClass>ch.heig.dai.lab.SMTP.SMTPrank</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -6,6 +6,37 @@ Ce programme est une application en ligne de commande permettant d'envoyer des c
 
 Ce projet vise à simplifier l'envoi de courriels en masse en utilisant le protocole SMTP. Il permet de spécifier des adresses électroniques de destinataires ainsi que le contenu des courriels à envoyer, le tout géré via des paramètres en ligne de commande ou une interface console.
 
+## Comment installer le programme
+
+Commencez par cloner ce repository : 
+```sh 
+git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP 
+```
+
+Ensuite, il faut compiler le code présent dans ```DAI-Lab04-SMTP``` Dans un dossier de destination de compilation, ici ```bin/```
+
+```shell
+javac -d bin/ code/src/main/java/ch/heig/dai/lab/SMTP/*.java
+```
+
+Puis, vous pouvez executer la classe principale ```MainTest``` pour lancer le programme (sans argument en console)
+
+```shell
+java bin/ch.heig.dai.lab.SMTP.SMTPrank
+```
+
+### Script complet de déploiement
+
+```shell
+git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP 
+
+cd DAI-Lab04-SMTP
+mkdir bin
+
+javac -d bin/ code/src/main/java/ch/heig/dai/lab/SMTP/*.java
+java bin/ch.heig.dai.lab.SMTP.SMTPrank
+```
+
 ## Structure du Code
 
 Le code est organisé en plusieurs classes offrant les fonctionnalités suivantes :
