@@ -69,7 +69,7 @@ git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP
 cd DAI-Lab04-SMTP/code/ 
 mvn clean 
 mvn package 
-java -jar target/SMTPrank.jar
+java -jar target/SMTPrank-1.0.jar
 
 ```
 
