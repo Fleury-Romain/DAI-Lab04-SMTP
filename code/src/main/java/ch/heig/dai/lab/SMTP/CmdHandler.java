@@ -59,24 +59,61 @@ public class CmdHandler {
     private boolean cmdArgsHandler(String[] args){
         switch(args[0]) {
             case "set" :
-                if (args.length != 3) {
-                    System.out.println("Nombre d'arguments incorrect !");
-                    return false;
-                }
                 String[] setArgs = {"ip", "port", "mailaddress", "mailcontent", "groupe", "mail", "size", "nbmail"};
                 if (!Arrays.asList(setArgs).contains(args[1])) {
                     System.out.println("Commande invalide !");
                     return false;
                 }
-                break;
+                if (args.length != 3) {
+                    System.out.println("Nombre d'arguments incorrect !");
+                    return false;
+                }
+                switch (args[1]) {
+                    case "port" : if(Integer.parseInt(args[2]) <= 0) {
+                        System.out.println("Le numéro port doit être un entier positif !");
+                        return false;
+                    }
+                    case "groupe" : if ((mailAddress == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailAddress.getNbrGroupe())) {
+                        System.out.println("Numéro du groupe invalide ou commande set mailaddress pas encore exécutéee !");
+                        return false;
+                    }
+                    case "mail" : if ((mailContent == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailContent.getNbr())) {
+                        System.out.println("Numéro du mail invalide ou commande set mailcontent pas encore exécutéee !");
+                        return false;
+                    }
+                    case "size" : if ((mailContent == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailContent.getNbr())) {
+                        System.out.println("Numéro du mail invalide ou commande set mailcontent pas encore exécutéee !");
+                        return false;
+                    }
+                    case "nbmail" : if (mailAddress == null || mailContent == null || Integer.parseInt(args[2]) < 1) {
+                        System.out.println("Le nombre de mails doit être un entier positif ou les commandes set mailaddress ou set groupe n'ont pas encore été exécutées !");
+                        return false;
+                    }
+                }
                 /*
-                port : nombre positif
-                groupe : nombre positif
-                mail : nombre positif
-                size : nombre positif
-                nbmail : nombre positif
-                 */
-                // y a-t-il des valeurs pour lesquelles port, mailaddress, mailcontent, groupe, mail, size, nbmail sont invalides ?
+                if (args[1].equals("port") && Integer.parseInt(args[2]) <= 0) {
+                    System.out.println("Le numéro port doit être un entier positif !");
+                    return false;
+                }
+                if (args[1].equals("groupe")) {
+                    if ((mailAddress == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailAddress.getNbrGroupe())) {
+                        System.out.println("Numéro du groupe invalide ou commande set mailaddress pas encore exécutéee !");
+                        return false;
+                    }
+                }
+                if (args[1].equals("mail")) {
+                    if ((mailContent == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailContent.getNbr())) {
+                        System.out.println("Numéro du mail invalide ou commande set mailcontent pas encore exécutéee !");
+                        return false;
+                    }
+                }
+                if (args[1].equals("size")) {
+                    if ((mailAddress == null || groupe == 0) || Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailAddress.getTo(groupe-1).size()) {
+                        System.out.println("Taille du groupe invalide ou commandes set mailaddress ou set groupe pas encore exécutées !");
+                        return false;
+                    }
+                }
+                */
             case "get" :
                 if (args.length < 2 || args.length > 3) {
                     System.out.println("Nombre d'arguments incorrect !");
@@ -85,7 +122,7 @@ public class CmdHandler {
                 switch (args[1]) {
                     case "groupe" :
                         if (mailAddress == null) {
-                            System.out.println("Champs 'groupe' non rempli !");
+                            System.out.println("Champ 'groupe' non rempli !");
                             return false;
                         }
                         if (args.length == 3) {
@@ -135,20 +172,20 @@ public class CmdHandler {
         }
         String[] cmdargs = cmd.split(" ");
 
+        // Parsing du filepath dans les arguments
+        if (cmdargs[2].contains("\"")) {
+            for (int i = 3; i < cmdargs.length; i++) {
+                cmdargs[2] = cmdargs[2] + " " + cmdargs[i];
+            }
+            cmdargs[2] = cmdargs[2].replace("\"", "");
+        }
+
         if (!cmdArgsHandler(cmdargs)){
             return;
         }
 
         switch (cmdargs[0]) {
             case "set" -> {  // Commande d'initialisation
-                // Parsing du filepath dans les arguments
-                if (cmdargs[2].contains("\"")) {
-                    for (int i = 3; i < cmdargs.length; i++) {
-                        cmdargs[2] = cmdargs[2] + " " + cmdargs[i];
-                    }
-                    cmdargs[2] = cmdargs[2].replace("\"", "");
-                }
-
                 // Traitement de la commande
                 switch (cmdargs[1]) {
                     case "ip" -> setIP(cmdargs[2]);
