@@ -136,10 +136,10 @@ public class CmdHandler {
                                 System.out.println("L'argument du groupe doit être un entier positif !");
                                 return false;
                             }
-                            if (Integer.parseInt(args[2]) >= mailAddress.getNbrGroupe()) {
+                            if (Integer.parseInt(args[2]) > mailAddress.getNbrGroupe()) {
                                 System.out.println("Numéro du groupe invalide !");
+                                return false;
                             }
-                            return false;
                         }
                         break;
                     case "mail" :
@@ -204,14 +204,10 @@ public class CmdHandler {
                 }
             }
             case "get" -> {
-                if (mailAddress == null || mailContent == null) {
-                    return;
-                }
-
-                if (cmdargs[1].equals("groupe")) {
+                if (cmdargs[1].equals("groupe") && mailAddress != null) {
                     if (cmdargs.length == 3) {
-                        System.out.println("From : " + mailAddress.getFrom(Integer.parseInt(cmdargs[2])));
-                        for (String s : mailAddress.getTo(Integer.parseInt(cmdargs[2]))) {
+                        System.out.println("From : " + mailAddress.getFrom(Integer.parseInt(cmdargs[2]) - 1));
+                        for (String s : mailAddress.getTo(Integer.parseInt(cmdargs[2]) - 1)) {
                             System.out.println("To : " + s);
                         }
                     } else {
@@ -222,7 +218,7 @@ public class CmdHandler {
                             }
                         }
                     }
-                } else if (cmdargs[1].equals("mail")) {
+                } else if (cmdargs[1].equals("mail") && mailContent != null) {
                     if (cmdargs.length == 3) {
                         System.out.println("Mail #" + cmdargs[2]);
                         System.out.println("Subject : " + mailContent.getSubject(Integer.parseInt(cmdargs[2])));
