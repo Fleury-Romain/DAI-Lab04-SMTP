@@ -72,7 +72,7 @@ public class CmdHandler {
                     case "port" : if(Integer.parseInt(args[2]) <= 0) {
                         System.out.println("Le numéro port doit être un entier positif !");
                         return false;
-                    }
+                    }else{return true;}
                     case "groupe" : if ((mailAddress == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailAddress.getNbrGroupe())) {
                         System.out.println("Numéro du groupe invalide ou commande set mailaddress pas encore exécutéee !");
                         return false;
@@ -85,10 +85,14 @@ public class CmdHandler {
                         System.out.println("Numéro du mail invalide ou commande set mailcontent pas encore exécutéee !");
                         return false;
                     }
-                    case "nbmail" : if (mailAddress == null || mailContent == null || Integer.parseInt(args[2]) < 1) {
-                        System.out.println("Le nombre de mails doit être un entier positif ou les commandes set mailaddress ou set groupe n'ont pas encore été exécutées !");
+                    case "nbmail" : if (Integer.parseInt(args[2]) < 1) {
+                        System.out.println("Le nombre de mails doit être un entier positif !");
                         return false;
                     }
+                    case "ip":
+                    case "mailaddress":
+                    case "mailcontent":
+                        return true;
                 }
                 /*
                 if (args[1].equals("port") && Integer.parseInt(args[2]) <= 0) {
@@ -160,7 +164,7 @@ public class CmdHandler {
                 }
                 break;
             default :
-                System.out.println("Commande non supportée !");
+                //System.out.println("Commande non supportée !");
                 return false;
         }
         return true;
@@ -173,11 +177,12 @@ public class CmdHandler {
         String[] cmdargs = cmd.split(" ");
 
         // Parsing du filepath dans les arguments
-        if (cmdargs[2].contains("\"")) {
+        if (cmdargs.length > 2 && cmdargs[2].contains("\"")) {
             for (int i = 3; i < cmdargs.length; i++) {
                 cmdargs[2] = cmdargs[2] + " " + cmdargs[i];
             }
             cmdargs[2] = cmdargs[2].replace("\"", "");
+            cmdargs = new String[]{cmdargs[0], cmdargs[1], cmdargs[2]};
         }
 
         if (!cmdArgsHandler(cmdargs)){
@@ -278,7 +283,7 @@ public class CmdHandler {
         if(mailContent == null){
             System.out.println("Veuillez d'abord renseigner un fichier de mail !");
         }else{
-            if(mail > 0 && mail < mailContent.getNbr()){
+            if(mail > 0 && mail <= mailContent.getNbr()){
                 this.mail = mail;
             }else{
                 System.out.println("La valeur spécifié ne correspond pas à un mail valide");
