@@ -72,26 +72,26 @@ public class CmdHandler {
                     case "port" : if(Integer.parseInt(args[2]) <= 0) {
                         System.out.println("Le numéro port doit être un entier positif !");
                         return false;
-                    }else{return true;}
+                    } return true;
                     case "groupe" : if ((mailAddress == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailAddress.getNbrGroupe())) {
                         System.out.println("Numéro du groupe invalide ou commande set mailaddress pas encore exécutéee !");
                         return false;
-                    }
+                    } return true;
                     case "mail" : if ((mailContent == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailContent.getNbr())) {
                         System.out.println("Numéro du mail invalide ou commande set mailcontent pas encore exécutéee !");
                         return false;
-                    }
+                    } return true;
                     case "size" : if ((mailContent == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailContent.getNbr())) {
                         System.out.println("Numéro du mail invalide ou commande set mailcontent pas encore exécutéee !");
                         return false;
-                    }
+                    } return true;
                     case "nbmail" : if (Integer.parseInt(args[2]) < 1) {
                         System.out.println("Le nombre de mails doit être un entier positif !");
                         return false;
-                    }
-                    case "ip":
-                    case "mailaddress":
-                    case "mailcontent":
+                    } return true;
+                    case "ip":          // pass
+                    case "mailaddress": // pass
+                    case "mailcontent": // pass
                         return true;
                 }
                 /*
