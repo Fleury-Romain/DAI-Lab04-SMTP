@@ -65,11 +65,12 @@ java target/SMTPrank.jar
 
 #### Script complet de déploiement avec Maven
 ```shell
-git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP &&
-cd DAI-Lab04-SMTP/code/ &&
-mvn clean &&
-mvn package &&
-java target/SMTPrank.jar
+git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP
+cd DAI-Lab04-SMTP/code/ 
+mvn clean 
+mvn package 
+java -jar target/SMTPrank.jar
+
 ```
 
 ## Structure du Code
@@ -94,19 +95,7 @@ Le code est organisé en plusieurs classes offrant les fonctionnalités suivante
     - `--groupe [groupe]`: Définit le groupe d'adresses à utiliser.
     - `--mail [mail]`: Définit l'e-mail à envoyer.
     - `--size [taille]`: Définit la taille du groupe d'adresses.
-
-### Compilation
-Pour compiler le programme, utilisez un compilateur Java tel que `javac` :
-```
-javac *.java
-```
-
-### Exécution
-Pour exécuter le programme, lancez la classe `MainTest` avec Java et fournissez les arguments nécessaires pour configurer l'envoi des e-mails :
-```
-java MainTest [arguments]
-```
-                                               
+ 
 ### Commandes Possibles dans CmdHandler
 
 Lorsque le programme est lancé en mode console (`CmdHandler`), les commandes suivantes sont disponibles :
