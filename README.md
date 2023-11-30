@@ -8,6 +8,8 @@ Ce projet vise à simplifier l'envoi de courriels en masse en utilisant le proto
 
 ## Comment installer le programme
 
+### Compilation standard
+
 Commencez par cloner ce repository : 
 ```sh 
 git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP 
@@ -25,7 +27,7 @@ Puis, vous pouvez executer la classe principale ```MainTest``` pour lancer le pr
 java bin/ch.heig.dai.lab.SMTP.SMTPrank
 ```
 
-### Script complet de déploiement
+#### Script complet de déploiement standard
 
 ```shell
 git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP 
@@ -35,6 +37,39 @@ mkdir bin
 
 javac -d bin/ code/src/main/java/ch/heig/dai/lab/SMTP/*.java
 java bin/ch.heig.dai.lab.SMTP.SMTPrank
+```
+
+### Compilation avec Maven
+
+Commencez par cloner le repository comme vu précédement
+```sh 
+git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP 
+```
+rendez-vous dans le dossier ```code``` qui contient le fichier pom.xml pour Maven
+
+```shell
+cd DAI-Lab04-SMTP/code/
+```
+
+Puis compiler les fichiers java avec Maven
+
+```shell
+mvn clean
+mvn package
+```
+Vous pouvez maintenant lancer ```SMTPrank.jar``` qui se situe dans ```target/```
+
+```shell
+java target/SMTPrank.jar
+```
+
+#### Script complet de déploiement avec Maven
+```shell
+git clone https://github.com/Fleury-Romain/DAI-Lab04-SMTP &&
+cd DAI-Lab04-SMTP/code/ &&
+mvn clean &&
+mvn package &&
+java target/SMTPrank.jar
 ```
 
 ## Structure du Code
