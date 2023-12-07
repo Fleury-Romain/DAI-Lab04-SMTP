@@ -15,11 +15,12 @@ public class MailAddressFileReader implements AutoCloseable{
 
     private void setAddress() throws IOException {
         /*
-         read line per line file, detect # as the beginning of a new group and what follows the # sign as the name of the group, sender: and what
-         follows as the e-mail address of the sender, and the each line starting with receiver: and what
-         follows as the e-mail address of the receiver (one receiver per line).
-         finish when a line with only \n is found
-         */
+        lire le fichier ligne par ligne,
+        détecter # comme le début d'un nouveau groupe et ce qui suit le signe # comme le nom du groupe,
+        sender: et ce qui suit comme l'adresse e-mail de l'expéditeur,
+        et chaque ligne commençant par receiver: et ce qui suit comme l'adresse e-mail d'un destinataire (un destinataire par line).
+        Se termine quand une ligne ne contenant que \n est trouvée
+        */
         List<String> from = new ArrayList<>();
         List<List<String>> to = new ArrayList<>();
 

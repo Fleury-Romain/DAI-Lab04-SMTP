@@ -14,10 +14,8 @@ public class ConnectionHandler {
     private final int addressID;
     private final int nbrTo;
     private int contentID;
-
     private final int isRandom;
     Random rand = new Random();
-
 
     public ConnectionHandler(String ip, int port, MailAddress mailAddress, MailContent mailContent, int addressID, int nbrTo, int contentID){
         this.ip = ip;
@@ -41,8 +39,7 @@ public class ConnectionHandler {
     }
 
     public void run(){
-        // set random
-        if(isRandom == 1){
+        if(isRandom == 1){ // set random
             contentID = rand.nextInt(mailContent.getNbr());
         }
 
@@ -51,9 +48,6 @@ public class ConnectionHandler {
             var in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
             var out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), StandardCharsets.UTF_8))
         ) {
-            // faire une boucle while sur la session
-            // + faire une boucle while pour la lecture du buffer
-
             String line;
             int flag = 0;
 
@@ -65,7 +59,7 @@ public class ConnectionHandler {
                         break;
                     }
                 }
-                // Warning, mais a cette étape nous somme sûre
+                // Warning, mais a cette étape nous sommes sûrs
                 // qu'il y a encore une ligne (!=null)
                 if(line.contains("221")){ break; }
                 SMTPhandler(out, flag);
@@ -77,20 +71,12 @@ public class ConnectionHandler {
     }
 
     private void send(BufferedWriter out, String msg) throws IOException {
-        // Vérification de la présence du
-        // caractère  de fin de ligne
         if(!msg.contains("\n")){msg += "\n";}
         out.write(msg);
         out.flush();
     }
 
     private void SMTPhandler(BufferedWriter out, int flag) throws IOException {
-        // FIXME Vérifier la séquence de message avec le bon nombre d'éléments
-
-        /*int addressID = mailAddress.getGroupeID() - 1; // controle le groupe d'address
-        int nbrTo = mailAddress.getGroupeSize(); // taille du groupe d'envoie
-        int contentID = mailContent.getId() - 1; // controle de la valeur du sujet et du contenu
-        */
         switch (flag) {
             case 1:
                 send(out, "EHLO rfz.root.sx\n");
@@ -99,8 +85,8 @@ public class ConnectionHandler {
                 send(out, "MAIL FROM:<" + mailAddress.getFrom(addressID) + ">\n");
                 break;
             case 3:
-                for(int i = 0; i < nbrTo; i++) {
-                    send(out, "RCPT TO: <" + mailAddress.getTo(addressID).get(i) + ">\n"); // ajouter de nouveaux destinataire
+                for(int i = 0; i < nbrTo; i++) { // ajouter de nouveaux destinataires
+                    send(out, "RCPT TO: <" + mailAddress.getTo(addressID).get(i) + ">\n");
                 }
                 break;
             case 4:
@@ -123,8 +109,3 @@ public class ConnectionHandler {
         }
     }
 }
-/*
-
-    SET GROUPE SIZE !!!!!
-
- */

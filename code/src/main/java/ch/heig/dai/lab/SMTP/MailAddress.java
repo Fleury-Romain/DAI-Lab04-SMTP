@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MailAddress {
     /*
-    Cette classe récupère des groupes de 3-4 addreses e-mails et définit le premier comme l'envoyeur
+    Cette classe récupère des groupes de 3-4 adresses e-mails et définit le premier comme l'expéditeur
     les adresses suivantes comme les cibles
      */
     private final List<String> from;

@@ -26,8 +26,7 @@ public class CmdHandler {
         }else { // avec certain argument, parse + envoyé direct par défaut
             // Récupération des arguments
             argsParser();
-            // on vérifie que tous les paramètres sont valides avant de
-            // lancer la connection smtp
+            // on vérifie que tous les paramètres sont valides avant de lancer la connection SMTP
             if(argsChecker()) {
                 // Lancement de la connection SMTP
                 smtpConnect();
@@ -40,7 +39,7 @@ public class CmdHandler {
         Scanner sc = new Scanner(System.in);
         String line = null;
         do {
-            // Affichage ddu menu principal de l'application
+            // Affichage du menu principal de l'application
             clearScreen();
             displayHeader();
             appCommand(line);System.out.println();
@@ -94,30 +93,6 @@ public class CmdHandler {
                     case "mailcontent": // pass
                         return true;
                 }
-                /*
-                if (args[1].equals("port") && Integer.parseInt(args[2]) <= 0) {
-                    System.out.println("Le numéro port doit être un entier positif !");
-                    return false;
-                }
-                if (args[1].equals("groupe")) {
-                    if ((mailAddress == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailAddress.getNbrGroupe())) {
-                        System.out.println("Numéro du groupe invalide ou commande set mailaddress pas encore exécutéee !");
-                        return false;
-                    }
-                }
-                if (args[1].equals("mail")) {
-                    if ((mailContent == null) || (Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailContent.getNbr())) {
-                        System.out.println("Numéro du mail invalide ou commande set mailcontent pas encore exécutéee !");
-                        return false;
-                    }
-                }
-                if (args[1].equals("size")) {
-                    if ((mailAddress == null || groupe == 0) || Integer.parseInt(args[2]) < 1 || Integer.parseInt(args[2]) > mailAddress.getTo(groupe-1).size()) {
-                        System.out.println("Taille du groupe invalide ou commandes set mailaddress ou set groupe pas encore exécutées !");
-                        return false;
-                    }
-                }
-                */
             case "get" :
                 if (args.length < 2 || args.length > 3) {
                     System.out.println("Nombre d'arguments incorrect !");
@@ -164,7 +139,6 @@ public class CmdHandler {
                 }
                 break;
             default :
-                //System.out.println("Commande non supportée !");
                 return false;
         }
         return true;
@@ -199,7 +173,7 @@ public class CmdHandler {
                     case "mailcontent" -> setMailContent(cmdargs[2]);
                     case "groupe" -> setGroupe(Integer.parseInt(cmdargs[2]));
                     case "mail" -> setMail(Integer.parseInt(cmdargs[2]));
-                    case "size" -> this.groupeSize = Integer.parseInt(cmdargs[2]); // TODO changer pour une fonction propre avec vérification !
+                    case "size" -> this.groupeSize = Integer.parseInt(cmdargs[2]);
                     case "nbmail" -> setNbMail(Integer.parseInt(cmdargs[2]));
                 }
             }
@@ -381,7 +355,7 @@ public class CmdHandler {
                 case "--mail":
                     mail = Integer.parseInt(args[i+1]);
                     break;
-                case "-gs":
+                case "-s":
                 case "--groupesize":
                     groupeSize = Integer.parseInt(args[i+1]);
                     break;
